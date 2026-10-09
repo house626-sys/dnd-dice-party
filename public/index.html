@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dice Party | D&D Multiplayer Roller</title>
+<style>
+:root{--bg:#101016;--panel:#1b1a25;--panel2:#232130;--line:#39364a;--text:#f4f0ff;--muted:#a8a2bd;--gold:#f4c76a;--purple:#a78bfa;--green:#6ee7b7;--red:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#28203b 0,#101016 52%);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:11px 14px;transition:transform .12s,border-color .12s,background .12s}button:hover{border-color:var(--gold);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.shell{max-width:1120px;margin:0 auto;padding:28px 18px 50px}.brand{display:flex;align-items:center;gap:14px;margin-bottom:24px}.logo{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#f4c76a,#d88c4a);color:#221629;font-size:28px;box-shadow:0 8px 28px #f4c76a25}.brand h1{margin:0;font-size:clamp(25px,4vw,36px);letter-spacing:-1px}.brand p{margin:3px 0 0;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.3fr);gap:18px}.panel{background:#1b1a25ed;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 14px 45px #0002}.panel h2{margin:0 0 15px;font-size:18px}.join-panel{margin-bottom:18px}.join-row{display:grid;grid-template-columns:1fr 1fr auto;gap:9px}.field{width:100%;min-width:0;background:#111019;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);outline:none}.field:focus{border-color:var(--purple)}.primary{background:var(--gold);border-color:var(--gold);color:#251a27;font-weight:800}.primary:hover{background:#ffda8c}.hint{font-size:12px;color:var(--muted);margin:10px 0 0}.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.dot{width:8px;height:8px;border-radius:50%;background:#777}.dot.live{background:var(--green);box-shadow:0 0 0 4px #6ee7b715}.table-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.room-chip{display:inline-flex;align-items:center;gap:8px;background:#2a2637;border:1px solid #4a405f;border-radius:10px;padding:7px 10px;font-weight:800;letter-spacing:2px;color:var(--gold)}.players{display:flex;flex-wrap:wrap;gap:7px}.player{background:#292637;border:1px solid #3c374e;border-radius:999px;padding:6px 10px;font-size:12px}.player.me{border-color:#9c85e9;color:#d9ccff}.dice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.die{position:relative;min-height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:linear-gradient(145deg,#292637,#201e2b);font-weight:800}.die .shape{font-size:24px;color:var(--gold);line-height:1.1}.die small{font-size:12px;color:var(--muted);font-weight:600}.die:active{transform:scale(.97)}.custom{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.custom-grid label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.custom-grid .field{padding:10px}.roll-action{width:100%;margin-top:12px}.quick-label{margin-top:12px}.feed-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.feed-head h2{margin:0}.quiet{background:transparent;color:var(--muted);font-size:12px;padding:8px 10px}.feed{margin-top:15px;display:flex;flex-direction:column;gap:10px;max-height:650px;overflow:auto;padding-right:3px}.empty{padding:45px 14px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}.roll-card{background:#242230;border:1px solid #39364a;border-radius:14px;padding:13px}.roll-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.roll-name{font-weight:800}.roll-time{font-size:11px;color:var(--muted);white-space:nowrap}.roll-detail{font-size:12px;color:var(--muted);margin-top:4px}.roll-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}.faces{display:flex;gap:5px;flex-wrap:wrap}.face{min-width:27px;height:27px;padding:0 5px;display:grid;place-items:center;border-radius:7px;background:#373147;border:1px solid #4d4564;font-size:12px;font-weight:700}.total{font-size:23px;font-weight:900;color:var(--gold);letter-spacing:-.5px}.modifier{font-size:12px;color:var(--muted)}.system{padding:9px 12px;border-radius:10px;background:#191821;color:var(--muted);font-size:12px;text-align:center}.footer{text-align:center;color:#777187;font-size:12px;margin-top:22px}.hidden{display:none!important}@media(max-width:760px){.layout{grid-template-columns:1fr}.join-row{grid-template-columns:1fr 1fr}.join-row .primary{grid-column:1/-1}.feed{max-height:440px}.panel{padding:16px}.shell{padding:20px 12px 36px}}
+</style>
+</head>
+<body><main class="shell">
+<header class="brand"><div class="logo">⚄</div><div><h1>Dice Party</h1><p>A shared dice tray for your adventuring party.</p></div></header>
+<section class="panel join-panel"><h2>Join your table</h2><form id="joinForm" class="join-row"><input id="playerName" class="field" maxlength="24" placeholder="Your adventurer name" required><input id="roomCode" class="field" maxlength="8" placeholder="Room code (e.g. DRAGON)" required><button class="primary" type="submit">Join table</button></form><p class="hint">Everyone using the same room code sees rolls instantly. Share the code with your party.</p><div class="status" style="margin-top:12px"><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting to dice server…</span></div></section>
+<div id="game" class="layout hidden"><section class="panel"><div class="table-meta"><div><div class="hint" style="margin:0 0 5px">YOU ARE ROLLING IN</div><div class="room-chip"><span id="activeRoom">TABLE</span><button id="copyCode" class="quiet" type="button" title="Copy room code">COPY</button></div></div><div class="status"><span class="dot live"></span><span id="playerCount">1 adventurer</span></div></div><div id="players" class="players"></div>
+<h2 style="margin-top:22px">Choose your dice</h2><div class="dice-grid">
+<button class="die" data-sides="4"><span class="shape">△</span><span>d4</span><small>Four-sided</small></button><button class="die" data-sides="6"><span class="shape">⬡</span><span>d6</span><small>Six-sided</small></button><button class="die" data-sides="8"><span class="shape">◇</span><span>d8</span><small>Eight-sided</small></button><button class="die" data-sides="10"><span class="shape">◈</span><span>d10</span><small>Ten-sided</small></button><button class="die" data-sides="12"><span class="shape">⬟</span><span>d12</span><small>Twelve-sided</small></button><button class="die" data-sides="20"><span class="shape">✧</span><span>d20</span><small>Twenty-sided</small></button><button class="die" data-sides="100" style="grid-column:2"><span class="shape">%</span><span>d100</span><small>Percentile</small></button>
+</div><div class="custom"><h2>Custom roll</h2><div class="custom-grid"><div><label for="count">Number of dice</label><input id="count" class="field" type="number" min="1" max="100" value="1"></div><div><label for="sides">Die size</label><select id="sides" class="field"><option value="2">d2</option><option value="3">d3</option><option value="4">d4</option><option value="6" selected>d6</option><option value="8">d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option><option value="100">d100</option></select></div><div><label for="modifier">Modifier (+/-)</label><input id="modifier" class="field" type="number" min="-100000" max="100000" value="0"></div><div><label for="label">Roll label (optional)</label><input id="label" class="field" maxlength="48" placeholder="e.g. Sneak Attack"></div></div><button id="customRoll" class="primary roll-action" type="button">Roll custom dice</button><div class="quick-label"><button id="initiative" type="button" style="width:100%">Roll initiative (d20)</button></div></div></section>
+<section class="panel"><div class="feed-head"><h2>Live roll history</h2><button id="clearHistory" class="quiet" type="button">Clear history</button></div><p class="hint">Rolls from everyone in this room appear here in real time.</p><div id="feed" class="feed"><div class="empty">No rolls yet. Someone has to tempt fate first.</div></div></section></div>
+<div class="footer">Dice Party · No account needed · Room data lives in memory on the server</div></main>
+<script src="/socket.io/socket.io.js"></script><script>
+const socket = io();
+const $ = id => document.getElementById(id);
+let joined = false, myName = '', myRoom = '';
+socket.on('connect', () => { $('connectionDot').classList.add('live'); $('connectionText').textContent = 'Connected to dice server'; });
+socket.on('disconnect', () => { $('connectionDot').classList.remove('live'); $('connectionText').textContent = 'Disconnected. Reconnecting…'; });
+socket.on('connect_error', () => { $('connectionDot').classList.remove('live'); $('connectionText').textContent = 'Could not reach dice server'; });
+$('joinForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('playerName').value.trim() || 'Adventurer';
+  const code = $('roomCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (code.length < 4 || code.length > 8) { alert('Room codes must be 4–8 letters or numbers.'); return; }
+  if (!socket.connected) { alert('The dice server is not connected yet.'); return; }
+  socket.emit('join-room', { name, roomCode: code });
+});
+socket.on('join-error', msg => alert(msg));
+socket.on('joined-room', data => {
+  joined = true; myName = data.name; myRoom = data.roomCode;
+  $('game').classList.remove('hidden'); $('activeRoom').textContent = myRoom;
+  $('joinForm').querySelector('button').textContent = 'Switch table';
+  $('connectionText').textContent = `Connected as ${myName}`;
+});
+function sendRoll(count, sides, modifier = 0, label = '') {
+  if (!joined) { alert('Join a table first.'); return; }
+  socket.emit('roll', { count, sides, modifier, label });
+}
+document.querySelectorAll('[data-sides]').forEach(btn => btn.addEventListener('click', () => sendRoll(1, Number(btn.dataset.sides), 0, '')));
+$('customRoll').addEventListener('click', () => {
+  const count = Math.max(1, Math.min(100, parseInt($('count').value, 10) || 1));
+  const sides = Number($('sides').value);
+  const modifier = Math.max(-100000, Math.min(100000, parseInt($('modifier').value, 10) || 0));
+  sendRoll(count, sides, modifier, $('label').value.trim());
+});
+$('initiative').addEventListener('click', () => sendRoll(1, 20, 0, 'Initiative'));
+$('clearHistory').addEventListener('click', () => { if (joined && confirm('Clear the shared roll history for everyone at this table?')) socket.emit('clear-history'); });
+$('copyCode').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(myRoom); $('copyCode').textContent = 'COPIED'; setTimeout(() => $('copyCode').textContent = 'COPY', 1200); }
+  catch { prompt('Copy this room code:', myRoom); }
+});
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function timeLabel(ts) { return new Date(ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'}); }
+socket.on('room-state', state => {
+  if (!joined) return;
+  $('playerCount').textContent = `${state.players.length} adventurer${state.players.length === 1 ? '' : 's'}`;
+  $('players').innerHTML = state.players.map(p => `<span class="player ${p.name === myName ? 'me' : ''}">${escapeHtml(p.name)}${p.name === myName ? ' · you' : ''}</span>`).join('');
+  const feed = $('feed');
+  if (!state.rolls.length) { feed.innerHTML = '<div class="empty">No rolls yet. Someone has to tempt fate first.</div>'; return; }
+  feed.innerHTML = state.rolls.slice().reverse().map(r => {
+    if (r.kind === 'system') return `<div class="system">${escapeHtml(r.text)} <span style="opacity:.7">· ${timeLabel(r.time)}</span></div>`;
+    const label = r.label ? ` <span style="color:var(--purple)">· ${escapeHtml(r.label)}</span>` : '';
+    const mod = r.modifier ? ` ${r.modifier > 0 ? '+' : '−'} ${Math.abs(r.modifier)}` : '';
+    const dice = r.rolls.map(v => `<span class="face">${v}</span>`).join('');
+    return `<article class="roll-card"><div class="roll-top"><div><div class="roll-name">${escapeHtml(r.name)}${label}</div><div class="roll-detail">${r.count}d${r.sides}${mod} · ${r.count} ${r.count === 1 ? 'die' : 'dice'}</div></div><div class="roll-time">${timeLabel(r.time)}</div></div><div class="roll-bottom"><div class="faces">${dice}</div><div style="text-align:right"><div class="total">${r.total}</div><div class="modifier">${r.subtotal}${r.modifier ? (r.modifier > 0 ? ' + ' : ' − ') + Math.abs(r.modifier) : ''}</div></div></div></article>`;
+  }).join('');
+});
+</script></body></html>
