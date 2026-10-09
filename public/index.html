@@ -17,7 +17,7 @@
 <h2 style="margin-top:22px">Choose your dice</h2><div class="dice-grid">
 <button class="die" data-sides="4"><span class="shape">△</span><span>d4</span><small>Four-sided</small></button><button class="die" data-sides="6"><span class="shape">⬡</span><span>d6</span><small>Six-sided</small></button><button class="die" data-sides="8"><span class="shape">◇</span><span>d8</span><small>Eight-sided</small></button><button class="die" data-sides="10"><span class="shape">◈</span><span>d10</span><small>Ten-sided</small></button><button class="die" data-sides="12"><span class="shape">⬟</span><span>d12</span><small>Twelve-sided</small></button><button class="die" data-sides="20"><span class="shape">✧</span><span>d20</span><small>Twenty-sided</small></button><button class="die" data-sides="100" style="grid-column:2"><span class="shape">%</span><span>d100</span><small>Percentile</small></button>
 </div><div class="custom"><h2>Custom roll</h2><div class="custom-grid"><div><label for="count">Number of dice</label><input id="count" class="field" type="number" min="1" max="100" value="1"></div><div><label for="sides">Die size</label><select id="sides" class="field"><option value="2">d2</option><option value="3">d3</option><option value="4">d4</option><option value="6" selected>d6</option><option value="8">d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option><option value="100">d100</option></select></div><div><label for="modifier">Modifier (+/-)</label><input id="modifier" class="field" type="number" min="-100000" max="100000" value="0"></div><div><label for="label">Roll label (optional)</label><input id="label" class="field" maxlength="48" placeholder="e.g. Sneak Attack"></div></div><button id="customRoll" class="primary roll-action" type="button">Roll custom dice</button><div class="quick-label"><button id="initiative" type="button" style="width:100%">Roll initiative (d20)</button></div></div></section>
-<section class="panel"><div class="feed-head"><h2>Live roll history</h2><button id="clearHistory" class="quiet" type="button">Clear history</button></div><p class="hint">Rolls from everyone in this room appear here in real time.</p><div id="feed" class="feed"><div class="empty">No rolls yet. Someone has to tempt fate first.</div></div></section></div>
+<section class="panel"><div class="feed-head"><h2>Live roll history</h2><button id="clearHistory" class="quiet" type="button">Clear history</button></div><p class="hint">Rolls from everyone in this room appear here in real time.</p><div id="feed" class="feed"><div class="empty">No rolls yet. Someone has to tempt fate first.</div></div></section>
 
 <div class="extras">
 <section class="panel">
@@ -46,7 +46,7 @@
   <div class="tool-actions"><button id="nextTurn" type="button">Next turn →</button><button id="resetInitiative" type="button">Reset tracker</button></div>
   <div id="initiativeList" class="init-list"><div class="init-empty">No combatants yet. Roll initiative to get started.</div></div>
 </section>
-</div>
+</div></div>
 <div class="footer">Dice Party · No account needed · Room data lives in memory on the server</div></main>
 <script src="/socket.io/socket.io.js"></script><script>
 const socket = io();
