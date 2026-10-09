@@ -97,12 +97,13 @@ io.on('connection', socket => {
     const characterName = cleanText(payload?.characterName, 28) || player.name;
     const modifier = Math.max(-20, Math.min(20, Number.parseInt(payload?.modifier, 10) || 0));
     const roll = rollDie(20);
+    const entryId = `${socket.id}:${characterName.toLocaleLowerCase()}`;
     const entry = {
-      id: socket.id, playerId: socket.id, playerName: player.name, characterName,
+      id: entryId, playerId: socket.id, playerName: player.name, characterName,
       roll, modifier, total: roll + modifier, time: Date.now()
     };
     const activeId = room.initiative[room.turnIndex]?.id;
-    const existingIndex = room.initiative.findIndex(item => item.playerId === socket.id);
+    const existingIndex = room.initiative.findIndex(item => item.id === entryId);
     if (existingIndex >= 0) room.initiative[existingIndex] = entry;
     else room.initiative.push(entry);
 
