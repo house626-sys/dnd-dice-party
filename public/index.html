@@ -7,6 +7,42 @@
 :root{--bg:#101016;--panel:#1b1a25;--panel2:#232130;--line:#39364a;--text:#f4f0ff;--muted:#a8a2bd;--gold:#f4c76a;--purple:#a78bfa;--green:#6ee7b7;--red:#fb7185}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#28203b 0,#101016 52%);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:11px 14px;transition:transform .12s,border-color .12s,background .12s}button:hover{border-color:var(--gold);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.shell{max-width:1120px;margin:0 auto;padding:28px 18px 50px}.brand{display:flex;align-items:center;gap:14px;margin-bottom:24px}.logo{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#f4c76a,#d88c4a);color:#221629;font-size:28px;box-shadow:0 8px 28px #f4c76a25}.brand h1{margin:0;font-size:clamp(25px,4vw,36px);letter-spacing:-1px}.brand p{margin:3px 0 0;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1.3fr);gap:18px}.panel{background:#1b1a25ed;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 14px 45px #0002}.panel h2{margin:0 0 15px;font-size:18px}.join-panel{margin-bottom:18px}.join-row{display:grid;grid-template-columns:1fr 1fr auto;gap:9px}.field{width:100%;min-width:0;background:#111019;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);outline:none}.field:focus{border-color:var(--purple)}.primary{background:var(--gold);border-color:var(--gold);color:#251a27;font-weight:800}.primary:hover{background:#ffda8c}.hint{font-size:12px;color:var(--muted);margin:10px 0 0}.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.dot{width:8px;height:8px;border-radius:50%;background:#777}.dot.live{background:var(--green);box-shadow:0 0 0 4px #6ee7b715}.table-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.room-chip{display:inline-flex;align-items:center;gap:8px;background:#2a2637;border:1px solid #4a405f;border-radius:10px;padding:7px 10px;font-weight:800;letter-spacing:2px;color:var(--gold)}.players{display:flex;flex-wrap:wrap;gap:7px}.player{background:#292637;border:1px solid #3c374e;border-radius:999px;padding:6px 10px;font-size:12px}.player.me{border-color:#9c85e9;color:#d9ccff}.dice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.die{position:relative;min-height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:linear-gradient(145deg,#292637,#201e2b);font-weight:800}.die .shape{font-size:24px;color:var(--gold);line-height:1.1}.die small{font-size:12px;color:var(--muted);font-weight:600}.die:active{transform:scale(.97)}.custom{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.custom-grid label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.custom-grid .field{padding:10px}.roll-action{width:100%;margin-top:12px}.quick-label{margin-top:12px}.feed-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.feed-head h2{margin:0}.quiet{background:transparent;color:var(--muted);font-size:12px;padding:8px 10px}.feed{margin-top:15px;display:flex;flex-direction:column;gap:10px;max-height:650px;overflow:auto;padding-right:3px}.empty{padding:45px 14px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}.roll-card{background:#242230;border:1px solid #39364a;border-radius:14px;padding:13px}.roll-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.roll-name{font-weight:800}.roll-time{font-size:11px;color:var(--muted);white-space:nowrap}.roll-detail{font-size:12px;color:var(--muted);margin-top:4px}.roll-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}.faces{display:flex;gap:5px;flex-wrap:wrap}.face{min-width:27px;height:27px;padding:0 5px;display:grid;place-items:center;border-radius:7px;background:#373147;border:1px solid #4d4564;font-size:12px;font-weight:700}.total{font-size:23px;font-weight:900;color:var(--gold);letter-spacing:-.5px}.modifier{font-size:12px;color:var(--muted)}.system{padding:9px 12px;border-radius:10px;background:#191821;color:var(--muted);font-size:12px;text-align:center}.footer{text-align:center;color:#777187;font-size:12px;margin-top:22px}.hidden{display:none!important}
 .extras{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.extras h2{margin-bottom:8px}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.tool-grid label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.tool-grid .field{padding:10px}.wide{grid-column:1/-1}.checkrow{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px;margin-top:12px}.checkrow input{accent-color:var(--purple);width:17px;height:17px}.tool-actions{display:flex;gap:8px;margin-top:12px}.tool-actions button{flex:1}.init-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}.init-empty{padding:25px 12px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;font-size:13px}.init-entry{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--line);background:#242230;border-radius:12px}.init-entry.current{border-color:var(--gold);background:#322b22;box-shadow:0 0 0 1px #f4c76a22}.init-entry.current:before{content:"▶";font-size:11px;color:var(--gold)}.init-who{flex:1;min-width:0}.init-who strong{display:block;overflow-wrap:anywhere}.init-who small{color:var(--muted)}.init-total{font-size:24px;font-weight:900;color:var(--gold)}.face.selected-face{border-color:var(--gold);color:var(--gold);background:#4a3c27;box-shadow:0 0 0 1px #f4c76a55}
+/* Dice tumble animation */
+@keyframes button-dice-tumble {
+  0% { transform: translateY(0) rotate(0) scale(1); }
+  20% { transform: translateY(-7px) rotate(-12deg) scale(1.1); }
+  42% { transform: translateY(2px) rotate(16deg) scale(.94); }
+  64% { transform: translateY(-4px) rotate(-9deg) scale(1.06); }
+  82% { transform: translateY(1px) rotate(5deg) scale(.99); }
+  100% { transform: translateY(0) rotate(0) scale(1); }
+}
+@keyframes die-face-land {
+  0% { opacity: .18; transform: translateY(-15px) rotateX(85deg) rotateZ(-115deg) scale(.6); filter: blur(2px); }
+  25% { opacity: .75; transform: translateY(-7px) rotateX(-35deg) rotateZ(75deg) scale(1.16); filter: blur(1px); }
+  52% { opacity: .92; transform: translateY(3px) rotateX(24deg) rotateZ(-38deg) scale(.94); filter: blur(.4px); }
+  74% { opacity: 1; transform: translateY(-2px) rotateX(-10deg) rotateZ(15deg) scale(1.05); filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0) rotateZ(0) scale(1); filter: blur(0); }
+}
+@keyframes result-card-arrive {
+  0% { opacity: .25; transform: translateY(12px) scale(.985); border-color: var(--gold); box-shadow: 0 0 0 2px #f4c76a22; }
+  60% { opacity: 1; transform: translateY(-2px) scale(1.005); box-shadow: 0 0 0 4px #f4c76a0c; }
+  100% { opacity: 1; transform: translateY(0) scale(1); border-color: var(--line); box-shadow: none; }
+}
+.die.rolling .shape, .rolling-trigger { animation: button-dice-tumble .78s cubic-bezier(.23,.75,.25,1); }
+.die.rolling { border-color: var(--gold); box-shadow: 0 0 0 2px #f4c76a20, 0 8px 24px #f4c76a18; }
+.roll-card.new-roll { animation: result-card-arrive .48s ease-out both; }
+.new-roll .face.rolling-face { animation: die-face-land .92s cubic-bezier(.16,.75,.28,1) both; transform-origin: center; }
+.new-roll .face.rolling-face:nth-child(2) { animation-delay: .04s; }
+.new-roll .face.rolling-face:nth-child(3) { animation-delay: .08s; }
+.new-roll .face.rolling-face:nth-child(4) { animation-delay: .12s; }
+.new-roll .face.rolling-face:nth-child(5) { animation-delay: .16s; }
+.new-roll .face.rolling-face:nth-child(6) { animation-delay: .20s; }
+.new-roll .face.rolling-face:nth-child(7) { animation-delay: .24s; }
+.new-roll .face.rolling-face:nth-child(8) { animation-delay: .28s; }
+@media (prefers-reduced-motion: reduce) {
+  .die.rolling .shape, .rolling-trigger, .roll-card.new-roll, .new-roll .face.rolling-face { animation-duration: .01ms !important; animation-delay: 0ms !important; }
+}
+
 @media(max-width:760px){.layout,.extras{grid-template-columns:1fr}.join-row{grid-template-columns:1fr 1fr}.join-row .primary{grid-column:1/-1}.feed{max-height:440px}.panel{padding:16px}.shell{padding:20px 12px 36px}}
 </style>
 </head>
@@ -51,7 +87,7 @@
 <script src="/socket.io/socket.io.js"></script><script>
 const socket = io();
 const $ = id => document.getElementById(id);
-let joined = false, myName = '', myRoom = '';
+let joined = false, myName = '', myRoom = '', lastAnimatedRollId = null;
 socket.on('connect', () => { $('connectionDot').classList.add('live'); $('connectionText').textContent = 'Connected to dice server'; });
 socket.on('disconnect', () => { $('connectionDot').classList.remove('live'); $('connectionText').textContent = 'Disconnected. Reconnecting…'; });
 socket.on('connect_error', () => { $('connectionDot').classList.remove('live'); $('connectionText').textContent = 'Could not reach dice server'; });
@@ -70,18 +106,26 @@ socket.on('joined-room', data => {
   $('joinForm').querySelector('button').textContent = 'Switch table';
   $('connectionText').textContent = `Connected as ${myName}`;
 });
-function sendRoll(count, sides, modifier = 0, label = '', mode = 'normal') {
+function animateRollButton(button) {
+  if (!button) return;
+  button.classList.remove('rolling', 'rolling-trigger');
+  void button.offsetWidth;
+  button.classList.add(button.classList.contains('die') ? 'rolling' : 'rolling-trigger');
+  window.setTimeout(() => button.classList.remove('rolling', 'rolling-trigger'), 950);
+}
+function sendRoll(count, sides, modifier = 0, label = '', mode = 'normal', sourceButton = null) {
   if (!joined) { alert('Join a table first.'); return; }
+  animateRollButton(sourceButton || document.querySelector('[data-sides="' + sides + '"]'));
   socket.emit('roll', { count, sides, modifier, label, mode });
 }
-document.querySelectorAll('[data-sides]').forEach(btn => btn.addEventListener('click', () => sendRoll(1, Number(btn.dataset.sides), 0, '')));
+document.querySelectorAll('[data-sides]').forEach(btn => btn.addEventListener('click', () => sendRoll(1, Number(btn.dataset.sides), 0, '', 'normal', btn)));
 $('customRoll').addEventListener('click', () => {
   const count = Math.max(1, Math.min(100, parseInt($('count').value, 10) || 1));
   const sides = Number($('sides').value);
   const modifier = Math.max(-100000, Math.min(100000, parseInt($('modifier').value, 10) || 0));
-  sendRoll(count, sides, modifier, $('label').value.trim());
+  sendRoll(count, sides, modifier, $('label').value.trim(), 'normal', $('customRoll'));
 });
-$('initiative').addEventListener('click', () => sendRoll(1, 20, 0, 'Initiative'));
+$('initiative').addEventListener('click', () => sendRoll(1, 20, 0, 'Initiative', 'normal', $('initiative')));
 
 $('skillName').addEventListener('change', () => {
   const map = {'Acrobatics':'DEX','Animal Handling':'WIS','Arcana':'INT','Athletics':'STR','Deception':'CHA','History':'INT','Insight':'WIS','Intimidation':'CHA','Investigation':'INT','Medicine':'WIS','Nature':'INT','Perception':'WIS','Performance':'CHA','Persuasion':'CHA','Religion':'INT','Sleight of Hand':'DEX','Stealth':'DEX','Survival':'WIS'};
@@ -94,12 +138,13 @@ $('skillRoll').addEventListener('click', () => {
   const prof = $('skillProficient').checked ? Math.max(0, Math.min(20, parseInt($('skillProfBonus').value, 10) || 0)) : 0;
   const mode = $('skillRollMode').value;
   const label = `${skill} check · ${ability}${prof ? ' + proficiency' : ''}`;
-  sendRoll(1, 20, abilityMod + prof, label, mode);
+  sendRoll(1, 20, abilityMod + prof, label, mode, $('skillRoll'));
 });
 $('rollInitiative').addEventListener('click', () => {
   if (!joined) { alert('Join a table first.'); return; }
   const characterName = $('initiativeName').value.trim() || myName || 'Adventurer';
   const modifier = Math.max(-20, Math.min(20, parseInt($('initiativeBonus').value, 10) || 0));
+  animateRollButton($('rollInitiative'));
   socket.emit('initiative-roll', { characterName, modifier });
 });
 $('nextTurn').addEventListener('click', () => { if (joined) socket.emit('next-turn'); });
@@ -132,6 +177,9 @@ socket.on('room-state', state => {
   $('playerCount').textContent = `${state.players.length} adventurer${state.players.length === 1 ? '' : 's'}`;
   $('players').innerHTML = state.players.map(p => `<span class="player ${p.name === myName ? 'me' : ''}">${escapeHtml(p.name)}${p.name === myName ? ' · you' : ''}</span>`).join('');
   renderInitiative(state.initiative || [], state.turnIndex || 0);
+  const newestRoll = state.rolls.length ? state.rolls[state.rolls.length - 1] : null;
+  const freshRollId = newestRoll && newestRoll.kind === 'roll' && newestRoll.id !== lastAnimatedRollId ? newestRoll.id : null;
+  if (freshRollId) lastAnimatedRollId = freshRollId;
   const feed = $('feed');
   if (!state.rolls.length) { feed.innerHTML = '<div class="empty">No rolls yet. Someone has to tempt fate first.</div>'; return; }
   feed.innerHTML = state.rolls.slice().reverse().map(r => {
@@ -139,8 +187,9 @@ socket.on('room-state', state => {
     const label = r.label ? ` <span style="color:var(--purple)">· ${escapeHtml(r.label)}</span>` : '';
     const mod = r.modifier ? ` ${r.modifier > 0 ? '+' : '−'} ${Math.abs(r.modifier)}` : '';
     const rollDescription = r.rollMode === 'advantage' ? 'd20 · Advantage' : r.rollMode === 'disadvantage' ? 'd20 · Disadvantage' : `${r.count}d${r.sides} · ${r.count} ${r.count === 1 ? 'die' : 'dice'}`;
-    const dice = r.rolls.map((v,i) => `<span class="face ${r.rollMode !== 'normal' && i === r.selectedIndex ? 'selected-face' : ''}">${v}</span>`).join('');
-    return `<article class="roll-card"><div class="roll-top"><div><div class="roll-name">${escapeHtml(r.name)}${label}</div><div class="roll-detail">${rollDescription}${mod}</div></div><div class="roll-time">${timeLabel(r.time)}</div></div><div class="roll-bottom"><div class="faces">${dice}</div><div style="text-align:right"><div class="total">${r.total}</div><div class="modifier">${r.subtotal}${r.modifier ? (r.modifier > 0 ? ' + ' : ' − ') + Math.abs(r.modifier) : ''}</div></div></div></article>`;
+    const isFreshRoll = r.id === freshRollId;
+    const dice = r.rolls.map((v,i) => `<span class="face ${r.rollMode !== 'normal' && i === r.selectedIndex ? 'selected-face' : ''} ${isFreshRoll ? 'rolling-face' : ''}">${v}</span>`).join('');
+    return `<article class="roll-card ${isFreshRoll ? 'new-roll' : ''}"><div class="roll-top"><div><div class="roll-name">${escapeHtml(r.name)}${label}</div><div class="roll-detail">${rollDescription}${mod}</div></div><div class="roll-time">${timeLabel(r.time)}</div></div><div class="roll-bottom"><div class="faces">${dice}</div><div style="text-align:right"><div class="total">${r.total}</div><div class="modifier">${r.subtotal}${r.modifier ? (r.modifier > 0 ? ' + ' : ' − ') + Math.abs(r.modifier) : ''}</div></div></div></article>`;
   }).join('');
 });
 </script></body></html>
