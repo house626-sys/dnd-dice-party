@@ -43,33 +43,31 @@
   .die.rolling .shape, .rolling-trigger, .roll-card.new-roll, .new-roll .face.rolling-face { animation-duration: .01ms !important; animation-delay: 0ms !important; }
 }
 
-/* Prominent shared roll stage: animated dice roll, then reveal the server result. */
-.roll-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px;background:rgba(6,5,12,.78);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
-.roll-overlay.hidden{display:none!important}
-.roll-stage{width:min(390px,100%);padding:24px 22px 20px;text-align:center;background:radial-gradient(ellipse at top,#34284a,#17151f 70%);border:1px solid #66547f;border-radius:24px;box-shadow:0 25px 90px #0008,0 0 35px #a78bfa17}
-.roll-stage-kicker{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-weight:900}
-.roll-stage-title{margin:5px 0 0;font-size:20px;line-height:1.3;overflow-wrap:anywhere}
-.roll-stage-subtitle{font-size:12px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
-.animation-die-wrap{perspective:750px;height:164px;display:grid;place-items:center}
-.animation-die{width:124px;height:124px;display:grid;place-items:center;border:2px solid #e8c46f;border-radius:27px;background:linear-gradient(145deg,#f4d582 0%,#cd9346 45%,#81502d 100%);color:#211626;font-size:47px;font-weight:1000;letter-spacing:-2px;text-shadow:0 1px 0 #ffe7a2;box-shadow:inset 5px 5px 13px #fff4, inset -8px -9px 16px #301b3938,0 18px 35px #0006,0 0 30px #f4c76a22;transform-style:preserve-3d;position:relative;will-change:transform}
-.animation-die:before{content:"";position:absolute;inset:8px;border:1px solid #fff8;border-radius:19px;pointer-events:none}
-.animation-die.spinning{animation:real-die-roll 1.12s cubic-bezier(.22,.7,.25,1) both}
-.animation-die.settled{animation:die-land .27s ease-out both}
-@keyframes real-die-roll{
-  0%{transform:translateY(0) rotateX(0) rotateY(0) rotateZ(0) scale(1)}
-  18%{transform:translateY(-23px) rotateX(160deg) rotateY(205deg) rotateZ(90deg) scale(1.08)}
-  36%{transform:translateY(6px) rotateX(320deg) rotateY(470deg) rotateZ(205deg) scale(.93)}
-  57%{transform:translateY(-15px) rotateX(505deg) rotateY(690deg) rotateZ(310deg) scale(1.05)}
-  77%{transform:translateY(3px) rotateX(640deg) rotateY(830deg) rotateZ(410deg) scale(.98)}
-  100%{transform:translateY(0) rotateX(720deg) rotateY(900deg) rotateZ(480deg) scale(1)}
+/* A clearly visible 3-second roll directly inside Live roll history. */
+@keyframes history-card-pulse {
+  0%,100% { border-color:#5b4c76; box-shadow:0 0 0 1px #a78bfa20,0 0 15px #a78bfa0a; }
+  50% { border-color:var(--gold); box-shadow:0 0 0 2px #f4c76a2b,0 0 24px #f4c76a20; }
 }
-@keyframes die-land{0%{transform:scale(1.18) rotateZ(5deg);box-shadow:0 0 50px #f4c76a66}100%{transform:scale(1) rotateZ(0);box-shadow:inset 5px 5px 13px #fff4,inset -8px -9px 16px #301b3938,0 18px 35px #0006,0 0 30px #f4c76a22}}
-.roll-stage-result{min-height:35px;margin-top:1px;font-size:29px;font-weight:1000;color:var(--gold);letter-spacing:.4px}
-.roll-stage-status{font-size:12px;color:var(--muted);margin-top:3px}
-@media(max-width:480px){.roll-stage{padding:21px 16px 17px}.animation-die-wrap{height:145px}.animation-die{width:110px;height:110px;font-size:42px}}
-@media(prefers-reduced-motion:reduce){.animation-die.spinning{animation-duration:.16s}.animation-die.settled{animation-duration:.01ms}}
-
-
+@keyframes history-die-jump {
+  0%,100% { transform:translateY(1px) rotate(-4deg) scale(1); }
+  50% { transform:translateY(-5px) rotate(5deg) scale(1.1); }
+}
+@keyframes history-roll-pulse {
+  0%,100% { opacity:.65; }
+  50% { opacity:1; }
+}
+.roll-card.rolling-now { position:relative; overflow:hidden; border-color:var(--gold); animation:history-card-pulse .55s ease-in-out infinite; }
+.roll-card.rolling-now .roll-name { color:var(--gold); }
+.roll-card.rolling-now .face { min-width:34px; height:34px; color:var(--gold); background:#4a3c27; border-color:#8f723b; animation:history-die-jump .24s ease-in-out infinite; font-size:14px; }
+.roll-card.rolling-now .face:nth-child(2n) { animation-delay:.08s; }
+.roll-card.rolling-now .face:nth-child(3n) { animation-delay:.15s; }
+.roll-card.rolling-now .rolling-total { font-size:15px; letter-spacing:1px; animation:history-roll-pulse .55s ease-in-out infinite; }
+.roll-progress { height:5px; margin-top:12px; background:#3a334a; border-radius:99px; overflow:hidden; }
+.roll-progress span { display:block; width:35%; height:100%; border-radius:99px; background:linear-gradient(90deg,#a78bfa,var(--gold)); animation:history-progress 3s linear both; }
+@keyframes history-progress { from { transform:translateX(-110%); } to { transform:translateX(330%); } }
+@media(prefers-reduced-motion:reduce) {
+ .roll-card.rolling-now,.roll-card.rolling-now .face,.roll-card.rolling-now .rolling-total,.roll-progress span { animation-duration:.01ms!important; }
+}
 @media(max-width:760px){.layout,.extras{grid-template-columns:1fr}.join-row{grid-template-columns:1fr 1fr}.join-row .primary{grid-column:1/-1}.feed{max-height:440px}.panel{padding:16px}.shell{padding:20px 12px 36px}}
 </style>
 </head>
@@ -112,20 +110,10 @@
 </div></div>
 <div class="footer">Dice Party · No account needed · Room data lives in memory on the server</div></main>
 
-<div id="rollOverlay" class="roll-overlay hidden" role="status" aria-live="polite">
-  <div class="roll-stage">
-    <div class="roll-stage-kicker">Dice Party</div>
-    <div id="animationPlayer" class="roll-stage-title">An adventurer rolls</div>
-    <div id="animationLabel" class="roll-stage-subtitle">Rolling d20…</div>
-    <div class="animation-die-wrap"><div id="animationDie" class="animation-die"><span id="animationFace">20</span></div></div>
-    <div id="animationTotal" class="roll-stage-result"></div>
-    <div id="animationStatus" class="roll-stage-status">The dice are tumbling…</div>
-  </div>
-</div>
 <script src="/socket.io/socket.io.js"></script><script>
 const socket = io();
 const $ = id => document.getElementById(id);
-let joined = false, myName = '', myRoom = '', lastAnimatedRollId = null, hasInitialRoomState = false, rollAnimationSequence = 0, rollAnimationInterval = null, rollAnimationTimer = null, rollHideTimer = null;
+let joined = false, myName = '', myRoom = '', lastAnimatedRollId = null, hasInitialRoomState = false, activeHistoryRollId = null, historyRollEndsAt = 0, historyRollInterval = null, historyRollTimeout = null;
 socket.on('connect', () => { $('connectionDot').classList.add('live'); $('connectionText').textContent = 'Connected to dice server'; });
 socket.on('disconnect', () => { $('connectionDot').classList.remove('live'); $('connectionText').textContent = 'Disconnected. Reconnecting…'; });
 socket.on('connect_error', () => { $('connectionDot').classList.remove('live'); $('connectionText').textContent = 'Could not reach dice server'; });
@@ -196,61 +184,57 @@ $('copyCode').addEventListener('click', async () => {
   catch { prompt('Copy this room code:', myRoom); }
 });
 
-function playDiceAnimation(roll) {
-  if (!roll || !roll.rolls || !roll.rolls.length) return;
-  const overlay = $('rollOverlay');
-  const die = $('animationDie');
-  const face = $('animationFace');
-  if (!overlay || !die || !face) return;
-
-  rollAnimationSequence += 1;
-  const sequence = rollAnimationSequence;
-  if (rollAnimationInterval) window.clearInterval(rollAnimationInterval);
-  if (rollAnimationTimer) window.clearTimeout(rollAnimationTimer);
-  if (rollHideTimer) window.clearTimeout(rollHideTimer);
-
-  const isAdvantage = roll.rollMode === 'advantage' || roll.rollMode === 'disadvantage';
-  const sides = isAdvantage ? 20 : Number(roll.sides) || 20;
-  const finalFace = isAdvantage
-    ? roll.rolls[roll.selectedIndex == null ? 0 : roll.selectedIndex]
-    : (roll.count === 1 ? roll.rolls[0] : roll.total);
-  const label = roll.label ? String(roll.label).replace(/\s*·\s*/g, ' · ') : 'A roll from the table';
-  $('animationPlayer').textContent = String(roll.name || 'Adventurer');
-  $('animationLabel').textContent = label + ' · ' + (isAdvantage ? (roll.rollMode === 'advantage' ? 'Advantage' : 'Disadvantage') : (String(roll.count || 1) + 'd' + sides));
-  $('animationTotal').textContent = '';
-  $('animationStatus').textContent = 'The dice are tumbling…';
-  overlay.classList.remove('hidden');
-  die.classList.remove('spinning', 'settled');
-  face.textContent = String(1 + Math.floor(Math.random() * sides));
-  void die.offsetWidth;
-  die.classList.add('spinning');
-
-  const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const duration = reduced ? 180 : 1120;
-  rollAnimationInterval = window.setInterval(() => {
-    if (sequence !== rollAnimationSequence) return;
-    face.textContent = String(1 + Math.floor(Math.random() * sides));
-  }, reduced ? 75 : 58);
-
-  rollAnimationTimer = window.setTimeout(() => {
-    if (sequence !== rollAnimationSequence) return;
-    if (rollAnimationInterval) window.clearInterval(rollAnimationInterval);
-    rollAnimationInterval = null;
-    face.textContent = String(finalFace);
-    die.classList.remove('spinning');
-    die.classList.add('settled');
-    $('animationTotal').textContent = 'TOTAL ' + String(roll.total);
-    $('animationStatus').textContent = (roll.rollMode === 'advantage' || roll.rollMode === 'disadvantage')
-      ? ('Both dice: ' + roll.rolls.join(' and ') + ' · ' + (roll.rollMode === 'advantage' ? 'higher' : 'lower') + ' kept')
-      : (roll.count > 1 ? (String(roll.count) + ' dice rolled') : 'The die has landed');
-    rollHideTimer = window.setTimeout(() => {
-      if (sequence === rollAnimationSequence) overlay.classList.add('hidden');
-    }, 850);
-  }, duration);
-}
-
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function timeLabel(ts) { return new Date(ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'}); }
+
+function startHistoryRollAnimation(roll) {
+  if (!roll) return;
+  if (historyRollInterval) window.clearInterval(historyRollInterval);
+  if (historyRollTimeout) window.clearTimeout(historyRollTimeout);
+
+  const rollId = roll.id;
+  const sides = roll.rollMode === 'advantage' || roll.rollMode === 'disadvantage' ? 20 : (Number(roll.sides) || 20);
+  const tick = () => {
+    if (activeHistoryRollId !== rollId) return;
+    const card = Array.from($('feed').querySelectorAll('.roll-card')).find(node => node.dataset.rollId === rollId);
+    if (!card) return;
+    card.querySelectorAll('.face').forEach(face => {
+      face.textContent = String(1 + Math.floor(Math.random() * sides));
+    });
+    const total = card.querySelector('.total');
+    if (total) total.textContent = 'ROLLING…';
+  };
+  tick();
+  historyRollInterval = window.setInterval(tick, 75);
+
+  const remaining = Math.max(0, historyRollEndsAt - Date.now());
+  historyRollTimeout = window.setTimeout(() => {
+    if (activeHistoryRollId !== rollId) return;
+    if (historyRollInterval) window.clearInterval(historyRollInterval);
+    historyRollInterval = null;
+    activeHistoryRollId = null;
+    historyRollEndsAt = 0;
+
+    const card = Array.from($('feed').querySelectorAll('.roll-card')).find(node => node.dataset.rollId === rollId);
+    if (!card) return;
+    card.classList.remove('rolling-now');
+    card.querySelectorAll('.face').forEach((face, index) => {
+      face.classList.remove('rolling-face');
+      if (roll.rollMode !== 'normal' && index === roll.selectedIndex) face.classList.add('selected-face');
+      else face.classList.remove('selected-face');
+      face.textContent = String(roll.rolls[index]);
+    });
+    const total = card.querySelector('.total');
+    if (total) {
+      total.classList.remove('rolling-total');
+      total.textContent = String(roll.total);
+    }
+    const progress = card.querySelector('.roll-progress');
+    if (progress) progress.remove();
+    const subtotal = card.querySelector('.modifier');
+    if (subtotal) subtotal.textContent = String(roll.subtotal) + (roll.modifier ? (roll.modifier > 0 ? ' + ' : ' − ') + Math.abs(roll.modifier) : '');
+  }, remaining);
+}
 
 function renderInitiative(entries, turnIndex) {
   const list = $('initiativeList');
@@ -270,14 +254,17 @@ socket.on('room-state', state => {
   $('players').innerHTML = state.players.map(p => `<span class="player ${p.name === myName ? 'me' : ''}">${escapeHtml(p.name)}${p.name === myName ? ' · you' : ''}</span>`).join('');
   renderInitiative(state.initiative || [], state.turnIndex || 0);
   const newestRoll = state.rolls.length ? state.rolls[state.rolls.length - 1] : null;
-  let freshRollId = null;
+  let freshRoll = null;
   if (!hasInitialRoomState) {
     hasInitialRoomState = true;
     lastAnimatedRollId = newestRoll && newestRoll.kind === 'roll' ? newestRoll.id : null;
   } else if (newestRoll && newestRoll.kind === 'roll' && newestRoll.id !== lastAnimatedRollId) {
-    freshRollId = newestRoll.id;
+    freshRoll = newestRoll;
     lastAnimatedRollId = newestRoll.id;
-    playDiceAnimation(newestRoll);
+    activeHistoryRollId = newestRoll.id;
+    historyRollEndsAt = Date.now() + 3000;
+    if (historyRollInterval) window.clearInterval(historyRollInterval);
+    if (historyRollTimeout) window.clearTimeout(historyRollTimeout);
   }
   const feed = $('feed');
   if (!state.rolls.length) { feed.innerHTML = '<div class="empty">No rolls yet. Someone has to tempt fate first.</div>'; return; }
@@ -286,9 +273,14 @@ socket.on('room-state', state => {
     const label = r.label ? ` <span style="color:var(--purple)">· ${escapeHtml(r.label)}</span>` : '';
     const mod = r.modifier ? ` ${r.modifier > 0 ? '+' : '−'} ${Math.abs(r.modifier)}` : '';
     const rollDescription = r.rollMode === 'advantage' ? 'd20 · Advantage' : r.rollMode === 'disadvantage' ? 'd20 · Disadvantage' : `${r.count}d${r.sides} · ${r.count} ${r.count === 1 ? 'die' : 'dice'}`;
-    const isFreshRoll = r.id === freshRollId;
-    const dice = r.rolls.map((v,i) => `<span class="face ${r.rollMode !== 'normal' && i === r.selectedIndex ? 'selected-face' : ''} ${isFreshRoll ? 'rolling-face' : ''}">${v}</span>`).join('');
-    return `<article class="roll-card ${isFreshRoll ? 'new-roll' : ''}"><div class="roll-top"><div><div class="roll-name">${escapeHtml(r.name)}${label}</div><div class="roll-detail">${rollDescription}${mod}</div></div><div class="roll-time">${timeLabel(r.time)}</div></div><div class="roll-bottom"><div class="faces">${dice}</div><div style="text-align:right"><div class="total">${r.total}</div><div class="modifier">${r.subtotal}${r.modifier ? (r.modifier > 0 ? ' + ' : ' − ') + Math.abs(r.modifier) : ''}</div></div></div></article>`;
+    const isRolling = r.id === activeHistoryRollId && Date.now() < historyRollEndsAt;
+    const dice = r.rolls.map((v,i) => {
+      const sidesForDisplay = r.rollMode === 'advantage' || r.rollMode === 'disadvantage' ? 20 : r.sides;
+      const displayedValue = isRolling ? 1 + Math.floor(Math.random() * sidesForDisplay) : v;
+      return `<span class="face ${!isRolling && r.rollMode !== 'normal' && i === r.selectedIndex ? 'selected-face' : ''} ${isRolling ? 'rolling-face' : ''}">${displayedValue}</span>`;
+    }).join('');
+    return `<article class="roll-card ${isRolling ? 'rolling-now' : ''}" data-roll-id="${escapeHtml(r.id)}"><div class="roll-top"><div><div class="roll-name">${escapeHtml(r.name)}${label}</div><div class="roll-detail">${isRolling ? 'Rolling ' + rollDescription : rollDescription}${mod}</div></div><div class="roll-time">${timeLabel(r.time)}</div></div><div class="roll-bottom"><div class="faces">${dice}</div><div style="text-align:right"><div class="total ${isRolling ? 'rolling-total' : ''}">${isRolling ? 'ROLLING…' : r.total}</div><div class="modifier">${isRolling ? 'calculating result' : (String(r.subtotal) + (r.modifier ? (r.modifier > 0 ? ' + ' : ' − ') + Math.abs(r.modifier) : ''))}</div></div></div>${isRolling ? '<div class="roll-progress"><span></span></div>' : ''}</article>`;
   }).join('');
+  if (freshRoll) startHistoryRollAnimation(freshRoll);
 });
 </script></body></html>
