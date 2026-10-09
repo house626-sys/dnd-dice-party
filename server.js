@@ -16,7 +16,7 @@ function cleanText(value, max = 28) {
   return String(value || '').replace(/[<>\u0000-\u001f]/g, '').trim().slice(0, max);
 }
 function getRoom(roomCode) {
-  if (!rooms.has(roomCode)) rooms.set(roomCode, { players: new Map(), rolls: [] });
+  if (!rooms.has(roomCode)) rooms.set(roomCode, { players: new Map(), rolls: [], initiative: [], turnIndex: 0 });
   return rooms.get(roomCode);
 }
 function snapshot(roomCode) {
@@ -24,7 +24,9 @@ function snapshot(roomCode) {
   if (!room) return;
   io.to(roomCode).emit('room-state', {
     players: [...room.players.values()],
-    rolls: room.rolls.slice(-60)
+    rolls: room.rolls.slice(-60),
+    initiative: room.initiative,
+    turnIndex: room.turnIndex
   });
 }
 function rollDie(sides) { return Math.floor(Math.random() * sides) + 1; }
@@ -60,12 +62,84 @@ io.on('connection', socket => {
     const modifier = Math.max(-100000, Math.min(100000, Number.parseInt(payload?.modifier, 10) || 0));
     if (![2,3,4,6,8,10,12,20,100].includes(sides)) return;
     const label = cleanText(payload?.label, 48);
-    const rolls = Array.from({ length: count }, () => rollDie(sides));
-    const subtotal = rolls.reduce((a,b) => a+b, 0);
+    const requestedMode = cleanText(payload?.mode, 16).toLowerCase();
+    const rollMode = sides === 20 && count === 1 && ['advantage', 'disadvantage'].includes(requestedMode) ? requestedMode : 'normal';
+    let rolls;
+    let subtotal;
+    let selectedIndex = null;
+    if (rollMode === 'normal') {
+      rolls = Array.from({ length: count }, () => rollDie(sides));
+      subtotal = rolls.reduce((a,b) => a+b, 0);
+    } else {
+      rolls = [rollDie(20), rollDie(20)];
+      selectedIndex = rollMode === 'advantage'
+        ? (rolls[0] >= rolls[1] ? 0 : 1)
+        : (rolls[0] <= rolls[1] ? 0 : 1);
+      subtotal = rolls[selectedIndex];
+    }
     room.rolls.push({
       id: `${Date.now()}-${socket.id}-${Math.random().toString(36).slice(2,7)}`,
       kind: 'roll', name: player.name, playerId: socket.id, time: Date.now(),
-      count, sides, modifier, rolls, subtotal, total: subtotal + modifier, label
+      count, sides, modifier, rolls, subtotal, total: subtotal + modifier, label, rollMode, selectedIndex
+    });
+    room.rolls = room.rolls.slice(-60);
+    snapshot(roomCode);
+  });
+
+
+  socket.on('initiative-roll', payload => {
+    const roomCode = socket.data.roomCode;
+    if (!roomCode || !rooms.has(roomCode)) return;
+    const room = rooms.get(roomCode);
+    const player = room.players.get(socket.id);
+    if (!player) return;
+
+    const characterName = cleanText(payload?.characterName, 28) || player.name;
+    const modifier = Math.max(-20, Math.min(20, Number.parseInt(payload?.modifier, 10) || 0));
+    const roll = rollDie(20);
+    const entry = {
+      id: socket.id, playerId: socket.id, playerName: player.name, characterName,
+      roll, modifier, total: roll + modifier, time: Date.now()
+    };
+    const activeId = room.initiative[room.turnIndex]?.id;
+    const existingIndex = room.initiative.findIndex(item => item.playerId === socket.id);
+    if (existingIndex >= 0) room.initiative[existingIndex] = entry;
+    else room.initiative.push(entry);
+
+    room.initiative.sort((a, b) => b.total - a.total || a.characterName.localeCompare(b.characterName));
+    const preservedTurn = room.initiative.findIndex(item => item.id === activeId);
+    room.turnIndex = preservedTurn >= 0 ? preservedTurn : 0;
+
+    room.rolls.push({
+      id: `${Date.now()}-${socket.id}-init`, kind: 'roll', name: player.name,
+      playerId: socket.id, time: Date.now(), count: 1, sides: 20, modifier,
+      rolls: [roll], subtotal: roll, total: roll + modifier,
+      label: `Initiative · ${characterName}`, rollMode: 'normal', selectedIndex: null
+    });
+    room.rolls = room.rolls.slice(-60);
+    snapshot(roomCode);
+  });
+
+  socket.on('next-turn', () => {
+    const roomCode = socket.data.roomCode;
+    if (!roomCode || !rooms.has(roomCode)) return;
+    const room = rooms.get(roomCode);
+    if (!room.players.has(socket.id) || room.initiative.length === 0) return;
+    room.turnIndex = (room.turnIndex + 1) % room.initiative.length;
+    snapshot(roomCode);
+  });
+
+  socket.on('reset-initiative', () => {
+    const roomCode = socket.data.roomCode;
+    if (!roomCode || !rooms.has(roomCode)) return;
+    const room = rooms.get(roomCode);
+    const player = room.players.get(socket.id);
+    if (!player) return;
+    room.initiative = [];
+    room.turnIndex = 0;
+    room.rolls.push({
+      id: `${Date.now()}-${socket.id}-reset-init`, kind: 'system', name: 'Table',
+      text: `${player.name} reset the initiative tracker.`, time: Date.now()
     });
     room.rolls = room.rolls.slice(-60);
     snapshot(roomCode);
