@@ -8,6 +8,7 @@ A browser-based dice room for your D&D group. Join with a name and room code, ro
 - Custom dice pools, modifiers and roll labels
 - D&D 5e skill checks with ability modifiers, optional proficiency bonus, advantage, and disadvantage
 - Shared initiative tracker sorted from highest to lowest, with next-turn and reset controls
+- A player can track multiple named characters or monsters (for example, Goblin 1 and Goblin 2); re-rolling the same name updates that entry
 - Mobile-friendly layout
 
 ## Deploy on Railway
@@ -29,6 +30,5 @@ Requires Node.js 18 or newer.
 
 ## Notes
 - The tracker and roll history are stored in server memory and reset when the service restarts or the room becomes empty.
-- Each player can register one initiative entry in a room; rolling initiative again updates that entry.
 - The "Next turn" and "Reset tracker" controls are currently available to any room member, so use them as a group.
 - Anyone who knows a room code can join that room.
