@@ -83,7 +83,8 @@ io.on('connection', socket => {
     if (!room || !payload) return;
     const token = room.tokens.find(t => t.id === payload.id);
     if (!token) return;
-    if (role !== 'dm' && token.owner && token.owner !== memberName) return;
+    // Players may move only tokens explicitly assigned to their display name. Unassigned tokens are DM-only.
+    if (role !== 'dm' && token.owner !== memberName) return;
     token.x = Math.max(2, Math.min(98, Number(payload.x) || 0));
     token.y = Math.max(2, Math.min(98, Number(payload.y) || 0));
     broadcast(currentRoom);
