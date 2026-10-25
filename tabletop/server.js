@@ -102,7 +102,9 @@ io.on('connection', socket => {
     if (payload.owner !== undefined) token.owner = clean(payload.owner, 24);
     if (payload.image !== undefined) {
       const image = String(payload.image || '');
-      if (!image || /^https?:\\/\\//i.test(image) || /^data:image\\/(png|jpeg|webp|gif);base64,/i.test(image)) token.image = image.slice(0, 1200000);
+      const isHttp = image.startsWith('http://') || image.startsWith('https://');
+      const isDataImage = ['data:image/png;base64,','data:image/jpeg;base64,','data:image/webp;base64,','data:image/gif;base64,'].some(prefix => image.startsWith(prefix));
+      if (!image || isHttp || isDataImage) token.image = image.slice(0, 1200000);
     }
     broadcast(currentRoom);
   });
@@ -128,8 +130,10 @@ io.on('connection', socket => {
     if (role !== 'dm') return;
     const room = rooms.get(currentRoom);
     if (!room) return;
-    const url = clean(value, 2000);
-    if (url && !/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)) return;
+    const url = String(value || '').trim();
+    const isHttp = url.startsWith('http://') || url.startsWith('https://');
+    const isDataImage = ['data:image/png;base64,','data:image/jpeg;base64,','data:image/webp;base64,','data:image/gif;base64,'].some(prefix => url.startsWith(prefix));
+    if (url && !isHttp && !isDataImage) return;
     room.background = url;
     broadcast(currentRoom);
   });
