@@ -18,7 +18,7 @@ function clean(value, max = 100) {
   return String(value ?? '').trim().slice(0, max);
 }
 function samePlayerName(a, b) {
-  return clean(a, 24).normalize('NFKC').replace(/\\s+/g, ' ').toLocaleLowerCase() === clean(b, 24).normalize('NFKC').replace(/\\s+/g, ' ').toLocaleLowerCase();
+  return clean(a, 24).normalize('NFKC').replace(/\s+/g, ' ').toLocaleLowerCase() === clean(b, 24).normalize('NFKC').replace(/\s+/g, ' ').toLocaleLowerCase();
 }
 function roomCode(input) {
   return clean(input, 16).toUpperCase().replace(/[^A-Z0-9-]/g, '');
