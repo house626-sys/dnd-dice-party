@@ -19,6 +19,7 @@
 const socket = io();
 const $ = id => document.getElementById(id);
 let joined = false, myRole = 'player', myName = '', room = '', state = {tokens:[],background:'',grid:true,drawings:[],rolls:[],members:[]}, selectedId = null, dragging = null, panning = null, drawing = null, drawMode = false, zoom = 1, panX = 0, panY = 0, spaceDown = false;
+const samePlayerName = (a,b) => String(a??'').normalize('NFKC').trim().replace(/\\s+/g,' ').toLocaleLowerCase() === String(b??'').normalize('NFKC').trim().replace(/\\s+/g,' ').toLocaleLowerCase();
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 $('dmToggle').addEventListener('change', () => $('passwordWrap').classList.toggle('hidden', !$('dmToggle').checked));
 $('joinButton').addEventListener('click', joinRoom);
@@ -95,7 +96,7 @@ function startDrag(e){
   if(e.button!==0 || drawMode || spaceDown) return;
   e.stopPropagation();
   const id=e.currentTarget.dataset.id, token=(state.tokens||[]).find(t=>t.id===id);
-  if(!token || (myRole!=='dm' && token.owner!==myName)) return;
+  if(!token || (myRole!=='dm' && (!token.owner || !samePlayerName(token.owner,myName)))) return;
   dragging={id, pointerId:e.pointerId}; e.currentTarget.setPointerCapture(e.pointerId); e.preventDefault();
 }
 let pendingTokenPoint = null, tokenMoveFrame = 0;
