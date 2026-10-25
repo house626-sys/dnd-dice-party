@@ -169,7 +169,7 @@ io.on('connection', socket => {
     if (points.length < 2) return;
     const color = /^#[0-9a-f]{6}$/i.test(drawing.color || '') ? drawing.color : '#f5d77a';
     const width = Math.max(1, Math.min(24, Number(drawing.width) || 4));
-    room.drawings.push({id: crypto.randomUUID(), points, color, width});
+    room.drawings.push({id: crypto.randomUUID(), owner: memberName, points, color, width});
     broadcast(currentRoom);
   });
 
@@ -188,11 +188,23 @@ io.on('connection', socket => {
     broadcast(currentRoom);
   });
 
-  socket.on('undo-drawing', () => {
-    if (role !== 'dm') return;
+  socket.on('undo-drawing', drawingId => {
     const room = rooms.get(currentRoom);
     if (!room) return;
-    room.drawings.pop();
+    if (drawingId) {
+      const index = room.drawings.findIndex(d => d.id === drawingId);
+      if (index < 0) return;
+      const drawing = room.drawings[index];
+      if (role !== 'dm' && (!drawing.owner || !samePlayerName(drawing.owner, memberName))) return;
+      room.drawings.splice(index, 1);
+    } else {
+      let index = -1;
+      for (let i = room.drawings.length - 1; i >= 0; i--) {
+        if (role === 'dm' || samePlayerName(room.drawings[i].owner, memberName)) { index = i; break; }
+      }
+      if (index < 0) return;
+      room.drawings.splice(index, 1);
+    }
     broadcast(currentRoom);
   });
 
@@ -222,7 +234,13 @@ io.on('connection', socket => {
     if (typeof payload.background === 'string' && payload.background.length <= 1800000) room.background = payload.background;
     if (typeof payload.backgroundColor === 'string' && /^#[0-9a-f]{6}$/i.test(payload.backgroundColor)) room.backgroundColor = payload.backgroundColor;
     room.grid = payload.grid !== false;
-    if (Array.isArray(payload.drawings)) room.drawings = payload.drawings.slice(0, 500);
+    if (Array.isArray(payload.drawings)) room.drawings = payload.drawings.slice(0, 500).map(d => ({
+      id: typeof d.id === 'string' ? d.id.slice(0, 80) : crypto.randomUUID(),
+      owner: clean(d.owner, 24),
+      points: Array.isArray(d.points) ? d.points.slice(0, 2000) : [],
+      color: /^#[0-9a-f]{6}$/i.test(d.color || '') ? d.color : '#f5d77a',
+      width: Math.max(1, Math.min(24, Number(d.width) || 4))
+    }));
     broadcast(currentRoom);
   });
 
