@@ -47,9 +47,11 @@ function render(){
   if(!joined) return;
   $('members').innerHTML = (state.members||[]).map(m=>'<span class="playerchip '+(m.role==='dm'?'dm':'')+'">'+esc(m.name)+(m.role==='dm'?' · DM':'')+'</span>').join('');
   $('memberCount').textContent = (state.members||[]).length+' online';
-  const board = $('board');
-  if(state.background){ board.classList.add('map'); board.style.backgroundImage='linear-gradient(#0002,#0002),url("'+state.background.replace(/["\\\n\r]/g,'')+'")'; }
-  else { board.classList.remove('map'); board.style.backgroundImage=''; }
+  const board = $('board'), world = $('boardWorld');
+  if(state.background){ world.classList.add('map'); world.style.backgroundImage='linear-gradient(#0002,#0002),url("'+state.background.replace(/["\\\\\n\r]/g,'')+'")'; }
+  else { world.classList.remove('map'); world.style.backgroundImage=''; }
+  world.classList.toggle('grid-off', state.grid === false);
+  $('gridToggle').textContent='Grid: '+(state.grid === false?'off':'on');
   board.querySelectorAll('.token').forEach(el=>el.remove());
   (state.tokens||[]).forEach(t=>{
     const el=document.createElement('div'); el.className='token'; el.dataset.id=t.id; el.style.left=t.x+'%'; el.style.top=t.y+'%';
