@@ -28,6 +28,8 @@ function defaultRoom() {
       { id: crypto.randomUUID(), name: 'Goblin', hp: 7, maxHp: 7, x: 66, y: 45, color: '#67b98a', owner: '' }
     ],
     background: '',
+    grid: true,
+    drawings: [],
     rolls: [],
     members: {}
   };
@@ -37,7 +39,7 @@ function getRoom(code) {
   return rooms.get(code);
 }
 function publicState(room) {
-  return { tokens: room.tokens, background: room.background, rolls: room.rolls.slice(0, 20),
+  return { tokens: room.tokens, background: room.background, grid: room.grid !== false, drawings: room.drawings || [], rolls: room.rolls.slice(0, 20),
     members: Object.values(room.members).map(m => ({ name: m.name, role: m.role })) };
 }
 function broadcast(code) {
@@ -98,6 +100,10 @@ io.on('connection', socket => {
     if (payload.maxHp !== undefined) token.maxHp = Math.max(1, Math.min(9999, Number(payload.maxHp) || 1));
     if (payload.color !== undefined && /^#[0-9a-f]{6}$/i.test(payload.color)) token.color = payload.color;
     if (payload.owner !== undefined) token.owner = clean(payload.owner, 24);
+    if (payload.image !== undefined) {
+      const image = String(payload.image || '');
+      if (!image || /^https?:\\/\\//i.test(image) || /^data:image\\/(png|jpeg|webp|gif);base64,/i.test(image)) token.image = image.slice(0, 1200000);
+    }
     broadcast(currentRoom);
   });
 
@@ -125,6 +131,65 @@ io.on('connection', socket => {
     const url = clean(value, 2000);
     if (url && !/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)) return;
     room.background = url;
+    broadcast(currentRoom);
+  });
+
+
+  socket.on('set-grid', enabled => {
+    if (role !== 'dm') return;
+    const room = rooms.get(currentRoom);
+    if (!room) return;
+    room.grid = Boolean(enabled);
+    broadcast(currentRoom);
+  });
+
+  socket.on('add-drawing', drawing => {
+    if (role !== 'dm' || !drawing || !Array.isArray(drawing.points)) return;
+    const room = rooms.get(currentRoom);
+    if (!room || room.drawings.length >= 500) return;
+    const points = drawing.points.slice(0, 2000).filter(p => Number.isFinite(p.x) && Number.isFinite(p.y))
+      .map(p => ({x: Math.max(0, Math.min(1000, p.x)), y: Math.max(0, Math.min(1000, p.y))}));
+    if (points.length < 2) return;
+    const color = /^#[0-9a-f]{6}$/i.test(drawing.color || '') ? drawing.color : '#f5d77a';
+    const width = Math.max(1, Math.min(24, Number(drawing.width) || 4));
+    room.drawings.push({id: crypto.randomUUID(), points, color, width});
+    broadcast(currentRoom);
+  });
+
+  socket.on('undo-drawing', () => {
+    if (role !== 'dm') return;
+    const room = rooms.get(currentRoom);
+    if (!room) return;
+    room.drawings.pop();
+    broadcast(currentRoom);
+  });
+
+  socket.on('clear-drawings', () => {
+    if (role !== 'dm') return;
+    const room = rooms.get(currentRoom);
+    if (!room) return;
+    room.drawings = [];
+    broadcast(currentRoom);
+  });
+
+  socket.on('import-state', payload => {
+    if (role !== 'dm' || !payload || !Array.isArray(payload.tokens)) return;
+    const room = rooms.get(currentRoom);
+    if (!room) return;
+    room.tokens = payload.tokens.slice(0, 100).map(t => ({
+      id: typeof t.id === 'string' ? t.id.slice(0, 80) : crypto.randomUUID(),
+      name: clean(t.name, 32) || 'Character',
+      hp: Math.max(0, Math.min(9999, Number(t.hp) || 0)),
+      maxHp: Math.max(1, Math.min(9999, Number(t.maxHp) || 1)),
+      x: Math.max(2, Math.min(98, Number(t.x) || 50)),
+      y: Math.max(2, Math.min(98, Number(t.y) || 50)),
+      color: /^#[0-9a-f]{6}$/i.test(t.color || '') ? t.color : '#bd85e8',
+      owner: clean(t.owner, 24),
+      image: typeof t.image === 'string' ? t.image.slice(0, 1200000) : ''
+    }));
+    if (typeof payload.background === 'string' && payload.background.length <= 1800000) room.background = payload.background;
+    room.grid = payload.grid !== false;
+    if (Array.isArray(payload.drawings)) room.drawings = payload.drawings.slice(0, 500);
     broadcast(currentRoom);
   });
 
