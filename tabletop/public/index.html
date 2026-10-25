@@ -185,7 +185,7 @@ window.addEventListener('blur',()=>{spaceDown=false;panning=null;drawing=null;})
 function worldPoint(e){const r=$('board').getBoundingClientRect();return {x:Math.max(0,Math.min(1000,((e.clientX-r.left-panX)/zoom)/r.width*1000)),y:Math.max(0,Math.min(1000,((e.clientY-r.top-panY)/zoom)/r.height*1000))};}
 $('board').addEventListener('pointerdown',e=>{
   if(e.target.closest('.token'))return;
-  if(drawMode && e.button===0){drawing={points:[worldPoint(e)],color:$('drawColor').value,width:4};e.preventDefault();return;}
+  if(drawMode && e.button===0){drawing={points:[worldPoint(e)],color:$('drawColor').value,width:4};$('board').setPointerCapture(e.pointerId);e.preventDefault();return;}
   if(e.button===1 || e.button===0 || spaceDown){panning={x:e.clientX,y:e.clientY,panX,panY,pointerId:e.pointerId};$('board').setPointerCapture(e.pointerId);e.preventDefault();}
 });
 $('board').addEventListener('pointermove',e=>{
