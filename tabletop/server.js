@@ -17,6 +17,9 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 function clean(value, max = 100) {
   return String(value ?? '').trim().slice(0, max);
 }
+function samePlayerName(a, b) {
+  return clean(a, 24).normalize('NFKC').replace(/\\s+/g, ' ').toLocaleLowerCase() === clean(b, 24).normalize('NFKC').replace(/\\s+/g, ' ').toLocaleLowerCase();
+}
 function roomCode(input) {
   return clean(input, 16).toUpperCase().replace(/[^A-Z0-9-]/g, '');
 }
@@ -84,7 +87,7 @@ io.on('connection', socket => {
     const token = room.tokens.find(t => t.id === payload.id);
     if (!token) return;
     // Players may move only tokens explicitly assigned to their display name. Unassigned tokens are DM-only.
-    if (role !== 'dm' && token.owner !== memberName) return;
+    if (role !== 'dm' && (!token.owner || !samePlayerName(token.owner, memberName))) return;
     token.x = Math.max(2, Math.min(98, Number(payload.x) || 0));
     token.y = Math.max(2, Math.min(98, Number(payload.y) || 0));
     broadcast(currentRoom);
