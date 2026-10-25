@@ -6,7 +6,7 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, { maxHttpBufferSize: 2e6 });
 const PORT = process.env.PORT || 3000;
 const DM_PASSWORD = process.env.DM_PASSWORD || 'ChangeThis-DM-Password-Now';
 const rooms = new Map();
@@ -31,6 +31,7 @@ function defaultRoom() {
       { id: crypto.randomUUID(), name: 'Goblin', hp: 7, maxHp: 7, x: 66, y: 45, color: '#67b98a', owner: '' }
     ],
     background: '',
+    backgroundColor: '#24232b',
     grid: true,
     drawings: [],
     rolls: [],
@@ -42,7 +43,7 @@ function getRoom(code) {
   return rooms.get(code);
 }
 function publicState(room) {
-  return { tokens: room.tokens, background: room.background, grid: room.grid !== false, drawings: room.drawings || [], rolls: room.rolls.slice(0, 20),
+  return { tokens: room.tokens, background: room.background, backgroundColor: room.backgroundColor || '#24232b', grid: room.grid !== false, drawings: room.drawings || [], rolls: room.rolls.slice(0, 20),
     members: Object.values(room.members).map(m => ({ name: m.name, role: m.role })) };
 }
 function broadcast(code) {
@@ -143,6 +144,14 @@ io.on('connection', socket => {
   });
 
 
+  socket.on('set-background-color', value => {
+    if (role !== 'dm' || !/^#[0-9a-f]{6}$/i.test(String(value || ''))) return;
+    const room = rooms.get(currentRoom);
+    if (!room) return;
+    room.backgroundColor = String(value);
+    broadcast(currentRoom);
+  });
+
   socket.on('set-grid', enabled => {
     if (role !== 'dm') return;
     const room = rooms.get(currentRoom);
@@ -152,7 +161,7 @@ io.on('connection', socket => {
   });
 
   socket.on('add-drawing', drawing => {
-    if (role !== 'dm' || !drawing || !Array.isArray(drawing.points)) return;
+    if (!currentRoom || !drawing || !Array.isArray(drawing.points)) return;
     const room = rooms.get(currentRoom);
     if (!room || room.drawings.length >= 500) return;
     const points = drawing.points.slice(0, 2000).filter(p => Number.isFinite(p.x) && Number.isFinite(p.y))
@@ -161,6 +170,21 @@ io.on('connection', socket => {
     const color = /^#[0-9a-f]{6}$/i.test(drawing.color || '') ? drawing.color : '#f5d77a';
     const width = Math.max(1, Math.min(24, Number(drawing.width) || 4));
     room.drawings.push({id: crypto.randomUUID(), points, color, width});
+    broadcast(currentRoom);
+  });
+
+  socket.on('update-token-image', payload => {
+    if (role === 'dm' || !payload || typeof payload.image !== 'string') return;
+    const room = rooms.get(currentRoom);
+    if (!room) return;
+    const token = room.tokens.find(t => t.id === payload.id);
+    if (!token || !token.owner || !samePlayerName(token.owner, memberName)) return;
+    const image = payload.image;
+    const isHttp = image.startsWith('http://') || image.startsWith('https://');
+    const isDataImage = ['data:image/png;base64,','data:image/jpeg;base64,','data:image/webp;base64,','data:image/gif;base64,'].some(prefix => image.startsWith(prefix));
+    if (image && !isHttp && !isDataImage) return;
+    if (image.length > 1200000) return;
+    token.image = image;
     broadcast(currentRoom);
   });
 
@@ -196,6 +220,7 @@ io.on('connection', socket => {
       image: typeof t.image === 'string' ? t.image.slice(0, 1200000) : ''
     }));
     if (typeof payload.background === 'string' && payload.background.length <= 1800000) room.background = payload.background;
+    if (typeof payload.backgroundColor === 'string' && /^#[0-9a-f]{6}$/i.test(payload.backgroundColor)) room.backgroundColor = payload.backgroundColor;
     room.grid = payload.grid !== false;
     if (Array.isArray(payload.drawings)) room.drawings = payload.drawings.slice(0, 500);
     broadcast(currentRoom);
