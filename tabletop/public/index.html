@@ -70,7 +70,7 @@ function render(){
     const owners=[...new Set((state.members||[]).map(m=>m.name))];
     const current=(state.tokens||[]).find(t=>t.id===selectedId);
     $('editOwner').innerHTML='<option value="">Anyone / unassigned</option>'+owners.map(n=>'<option value="'+esc(n)+'">'+esc(n)+'</option>').join('');
-    if(current){ $('editName').value=current.name; $('editHp').value=current.hp; $('editMaxHp').value=current.maxHp; $('editColor').value=current.color; $('editOwner').value=current.owner||''; $('editImage').value=(current.image && /^https?:\\/\\//i.test(current.image))?current.image:''; }
+    if(current){ $('editName').value=current.name; $('editHp').value=current.hp; $('editMaxHp').value=current.maxHp; $('editColor').value=current.color; $('editOwner').value=current.owner||''; $('editImage').value=(current.image && (current.image.startsWith('http://') || current.image.startsWith('https://')))?current.image:''; }
   }
 }
 function selectToken(id){ selectedId=id; render(); }
